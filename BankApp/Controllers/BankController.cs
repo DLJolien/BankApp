@@ -54,5 +54,30 @@ namespace BankApp.Controllers
             _expenseDatabase.Insert(newExpense);
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Expense expenseToEdit = _expenseDatabase.GetExpense(id);
+            BankEditViewModel vm = new BankEditViewModel()
+            {
+                Amount = expenseToEdit.Amount,
+                Description = expenseToEdit.Description,
+                Date = expenseToEdit.Date
+            };
+
+            return View(vm);
+        }
+        [HttpPost]
+        public IActionResult Edit(BankEditViewModel vm)
+        {
+            Expense newExpense = new Expense()
+            {
+                Amount = vm.Amount,
+                Description = vm.Description,
+                Date = vm.Date
+            };
+            _expenseDatabase.Update(vm.Id, newExpense);
+            return (RedirectToAction("Index"));
+        }
     }
 }

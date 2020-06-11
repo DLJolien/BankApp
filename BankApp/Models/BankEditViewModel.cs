@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace BankApp.Models
 {
-    public class BankCreateViewModel
+    public class BankEditViewModel
     {
+        public int Id { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }
