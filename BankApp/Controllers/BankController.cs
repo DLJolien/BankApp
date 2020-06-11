@@ -42,6 +42,7 @@ namespace BankApp.Controllers
         {
             return View();
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Create(BankCreateViewModel vm)
         {
@@ -67,6 +68,7 @@ namespace BankApp.Controllers
 
             return View(vm);
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Edit(BankEditViewModel vm)
         {
@@ -93,6 +95,7 @@ namespace BankApp.Controllers
 
             return View(vm);
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult ConfirmDelete(int id)
         {
