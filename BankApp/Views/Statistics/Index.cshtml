@@ -1,0 +1,87 @@
+﻿@model StatisticsIndexViewModel
+
+@{
+    if (Model.Expenses.Count() == 0)
+    {
+        <br />
+        <strong>There are currently no expenses listed.</strong>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Expense
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><strong>Highest expense</strong></tr>
+                <tr>
+                    <td class="info">
+                        @Model.HighestExpense.Description
+                    </td>
+                    <td class="info">
+                        @Model.HighestExpense.Date
+                    </td>
+                    <td class="info">
+                        @Model.HighestExpense.Amount
+                    </td>
+                </tr>
+
+
+            </tbody>
+        </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Expense
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><strong>Lowest expense</strong></tr>
+                <tr>
+                    <td class="info">
+                        @Model.LowestExpense.Description
+                    </td>
+                    <td class="info">
+                        @Model.LowestExpense.Date
+                    </td>
+                    <td class="info">
+                        @Model.LowestExpense.Amount
+                    </td>
+                </tr>
+            </tbody>
+        </table>        
+    }
+}
+
+<style>
+    table, td {
+        border-bottom: 1px solid black;
+    }
+
+    .info {
+        width: 20vw;
+    }
+</style>
