@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace BankApp.Database
 {
-    public class ExpensesDatabase
-    {
         public interface IExpenseDatabase
         {
             Expense Insert(Expense expense);
@@ -28,9 +26,33 @@ namespace BankApp.Database
                 {
                     _expenses = new List<Expense>();
                 }
+                LoadTestData();
             }
 
-            public Expense GetExpense(int id)
+        private void LoadTestData()
+        {
+            Expense expense1 =  new Expense() { 
+            Date = new DateTime(2020,05,12),
+            Description = "Pizza order", 
+            Amount = 25};
+            Expense expense2 = new Expense()
+            {
+                Date = new DateTime(2020, 05, 18),
+                Description = "Shopping",
+                Amount = 124.78M
+            };
+            Expense expense3 = new Expense()
+            {
+                Date = new DateTime(2020, 05, 31),
+                Description = "Furniture: garden table",
+                Amount = 249.99M
+            };
+            _expenses.Add(expense1);
+            _expenses.Add(expense2);
+            _expenses.Add(expense3);
+        }
+
+        public Expense GetExpense(int id)
             {
                 return _expenses.FirstOrDefault(x => x.Id == id);
             }
@@ -68,5 +90,4 @@ namespace BankApp.Database
                 }
             }
         }
-    }
 }

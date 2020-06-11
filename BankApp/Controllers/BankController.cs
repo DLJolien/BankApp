@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BankApp.Database;
+using BankApp.Domain;
+using BankApp.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +11,26 @@ namespace BankApp.Controllers
 {
     public class BankController : Controller
     {
+        private readonly IExpenseDatabase _expenseDatabase;
 
+        public BankController(IExpenseDatabase expenseDatabase)
+        {
+            _expenseDatabase = expenseDatabase;
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            List<BankListViewModel> vmList = new List<BankListViewModel>();
+            IEnumerable<Expense> expenses = _expenseDatabase.GetExpenses();
+            foreach (var expense in expenses)
+            {
+                BankListViewModel vm = new BankListViewModel();
+                vmList.Add(vm);
+
+            }
+            
+            return View(vmList);
+        }
     }
 }
