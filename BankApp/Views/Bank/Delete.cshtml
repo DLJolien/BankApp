@@ -1,0 +1,9 @@
+﻿@model BankDeleteViewModel
+
+    <strong>Are you sure you want to delete the expense @Model.Description of €@Model.Amount on @Model.Date?</strong>
+
+    <form asp-controller="Bank" asp-action="ConfirmDelete" method="post" asp-route-id="@Model.Id">      
+        <button class=" btn-danger" type="submit">Yes</button>
+    </form>
+
+    <a asp-controller="Bank" asp-action="Index">Bank to index</a>

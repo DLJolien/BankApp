@@ -79,5 +79,25 @@ namespace BankApp.Controllers
             _expenseDatabase.Update(vm.Id, newExpense);
             return (RedirectToAction("Index"));
         }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            Expense expenseToDelete = _expenseDatabase.GetExpense(id);
+            BankDeleteViewModel vm = new BankDeleteViewModel()
+            {
+                Id= expenseToDelete.Id,
+                Amount = expenseToDelete.Amount,
+                Description = expenseToDelete.Description,
+                Date = expenseToDelete.Date
+            };
+
+            return View(vm);
+        }
+        [HttpPost]
+        public IActionResult ConfirmDelete(int id)
+        {
+            _expenseDatabase.Delete(id);
+            return (RedirectToAction("Index"));
+        }
     }
 }
