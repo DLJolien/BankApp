@@ -65,12 +65,12 @@ namespace BankApp.Database
                 Description = "Gas station",
                 Amount = 65.45M
             };
-            _expenses.Add(expense1);
-            _expenses.Add(expense2);
-            _expenses.Add(expense3);
-            _expenses.Add(expense4);
-            _expenses.Add(expense5);
-            _expenses.Add(expense6);
+            Insert(expense1);
+            Insert(expense2);
+            Insert(expense3);
+            Insert(expense4);
+            Insert(expense5);
+            Insert(expense6);
         }
 
         public Expense GetExpense(int id)

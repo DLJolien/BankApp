@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<BankListViewModel>
 
+    <a asp-controller="Bank" asp-action="Create">Add new expense</a>
+
 @{
     if (Model.Count() == 0)
     {
@@ -26,25 +28,34 @@
             <tbody>
                 @foreach (BankListViewModel expense in Model)
                 {
-                <tr>
-                    <td>
-                        @expense.Description
-                    </td>
-                    <td>
-                        @expense.Date
-                    </td>
-                    <td>
-                        @expense.Amount
-                    </td>
-                    <td>
-                        <a asp-controller="Bank" asp-action="Edit" asp-route-id="@expense.Id">Edit</a>
-                    </td>
-                    <td>
-                        <a asp-controller="Bank" asp-action="Delete" asp-route-id="@expense.Id">Delete</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td class="info">
+                            @expense.Description
+                        </td>
+                        <td class="info">
+                            @expense.Date
+                        </td>
+                        <td class="info">
+                            @expense.Amount
+                        </td>
+                        <td class="feature">
+                            <a asp-controller="Bank" asp-action="Edit" asp-route-id="@expense.Id">Edit</a>
+                        </td>
+                        <td class="feature">
+                            <a asp-controller="Bank" asp-action="Delete" asp-route-id="@expense.Id">Delete</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
     }
 }
+
+<style>
+    table, td {
+        border-bottom: 1px solid black;
+    }
+    .info {
+        width: 20vw;
+    }
+</style>

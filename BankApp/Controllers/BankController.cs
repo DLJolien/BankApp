@@ -37,5 +37,22 @@ namespace BankApp.Controllers
             
             return View(vmList);
         }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(BankCreateViewModel vm)
+        {
+            Expense newExpense = new Expense()
+            {
+                Amount = vm.Amount,
+                Description = vm.Description,
+                Date = vm.Date
+            };
+            _expenseDatabase.Insert(newExpense);
+            return RedirectToAction("Index");
+        }
     }
 }
