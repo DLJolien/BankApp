@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XoSe2VEH/40/wXCY3vsRNxo4GQln6XbmYGYkSaO1JQfUt/fdOheRmGUXTYO4wrXYp4mZO+ZrLtQ3kLfKrilb2Q==",
+  "dgSpecHash": "u+mOxyxQIRnnpAxQ8fBVL9bSHqDtu3lFFxbE3SIRU6u5vz7hI1bXVFMhcOQtwHXEEpkSLcXt9oVFoxWiHc8QdA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Jolien\\source\\repos\\ContactWeb\\BankApp\\BankApp\\BankApp.csproj",
+  "projectFilePath": "C:\\Users\\Jolien\\source\\repos\\BankApp\\BankApp\\BankApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Jolien\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
   ],

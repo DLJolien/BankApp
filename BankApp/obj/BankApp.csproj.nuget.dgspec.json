@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Jolien\\source\\repos\\ContactWeb\\BankApp\\BankApp\\BankApp.csproj": {}
+    "C:\\Users\\Jolien\\source\\repos\\BankApp\\BankApp\\BankApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Jolien\\source\\repos\\ContactWeb\\BankApp\\BankApp\\BankApp.csproj": {
+    "C:\\Users\\Jolien\\source\\repos\\BankApp\\BankApp\\BankApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Jolien\\source\\repos\\ContactWeb\\BankApp\\BankApp\\BankApp.csproj",
+        "projectUniqueName": "C:\\Users\\Jolien\\source\\repos\\BankApp\\BankApp\\BankApp.csproj",
         "projectName": "BankApp",
-        "projectPath": "C:\\Users\\Jolien\\source\\repos\\ContactWeb\\BankApp\\BankApp\\BankApp.csproj",
+        "projectPath": "C:\\Users\\Jolien\\source\\repos\\BankApp\\BankApp\\BankApp.csproj",
         "packagesPath": "C:\\Users\\Jolien\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Jolien\\source\\repos\\ContactWeb\\BankApp\\BankApp\\obj\\",
+        "outputPath": "C:\\Users\\Jolien\\source\\repos\\BankApp\\BankApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
