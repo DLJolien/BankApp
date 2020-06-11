@@ -32,24 +32,45 @@ namespace BankApp.Database
         private void LoadTestData()
         {
             Expense expense1 =  new Expense() { 
-            Date = new DateTime(2020,05,12),
+            Date = new DateTime(2020,05,12, 21, 01, 59),
             Description = "Pizza order", 
             Amount = 25};
             Expense expense2 = new Expense()
             {
-                Date = new DateTime(2020, 05, 18),
+                Date = new DateTime(2020, 05, 18, 23, 20, 58),
                 Description = "Shopping",
                 Amount = 124.78M
             };
             Expense expense3 = new Expense()
             {
-                Date = new DateTime(2020, 05, 31),
+                Date = new DateTime(2020, 05, 31, 6, 07, 05),
                 Description = "Furniture: garden table",
                 Amount = 249.99M
+            };
+            Expense expense4 = new Expense()
+            {
+                Date = new DateTime(2020, 04, 27, 10, 44, 27),
+                Description = "Furniture: cushions",
+                Amount = 42.31M
+            };
+            Expense expense5 = new Expense()
+            {
+                Date = new DateTime(2020, 03, 31, 18, 17, 36),
+                Description = "Restaurant Birthday",
+                Amount = 103.68M
+            };
+            Expense expense6 = new Expense()
+            {
+                Date = new DateTime(2020, 06, 07, 15,23,28),
+                Description = "Gas station",
+                Amount = 65.45M
             };
             _expenses.Add(expense1);
             _expenses.Add(expense2);
             _expenses.Add(expense3);
+            _expenses.Add(expense4);
+            _expenses.Add(expense5);
+            _expenses.Add(expense6);
         }
 
         public Expense GetExpense(int id)

@@ -1,2 +1,50 @@
 ﻿@model IEnumerable<BankListViewModel>
 
+@{
+    if (Model.Count() == 0)
+    {
+        <strong>There are currently no expenses listed.</strong>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Expense
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (BankListViewModel expense in Model)
+                {
+                <tr>
+                    <td>
+                        @expense.Description
+                    </td>
+                    <td>
+                        @expense.Date
+                    </td>
+                    <td>
+                        @expense.Amount
+                    </td>
+                    <td>
+                        <a asp-controller="Bank" asp-action="Edit" asp-route-id="@expense.Id">Edit</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Bank" asp-action="Delete" asp-route-id="@expense.Id">Delete</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

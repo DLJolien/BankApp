@@ -22,10 +22,15 @@ namespace BankApp.Controllers
         public IActionResult Index()
         {
             List<BankListViewModel> vmList = new List<BankListViewModel>();
-            IEnumerable<Expense> expenses = _expenseDatabase.GetExpenses();
+            IEnumerable<Expense> expenses = _expenseDatabase.GetExpenses().OrderBy(x =>x.Date);
             foreach (var expense in expenses)
             {
-                BankListViewModel vm = new BankListViewModel();
+                BankListViewModel vm = new BankListViewModel() {
+                    Id = expense.Id,
+                    Description = expense.Description,
+                    Amount = expense.Amount,
+                    Date = expense.Date
+                };
                 vmList.Add(vm);
 
             }
