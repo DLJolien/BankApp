@@ -65,12 +65,26 @@ namespace BankApp.Database
                 Description = "Gas station",
                 Amount = 65.45M
             };
+            Expense expense7 = new Expense()
+            {
+                Date = new DateTime(2020, 06, 07, 20, 23, 28),
+                Description = "Restaurant Jackie",
+                Amount = 167.48M
+            };
+            Expense expense8 = new Expense()
+            {
+                Date = new DateTime(2020, 06, 07, 17, 23, 28),
+                Description = "Present Father's day",
+                Amount = 58.49M
+            };
             Insert(expense1);
             Insert(expense2);
             Insert(expense3);
             Insert(expense4);
             Insert(expense5);
             Insert(expense6);
+            Insert(expense7);
+            Insert(expense8);
         }
 
         public Expense GetExpense(int id)

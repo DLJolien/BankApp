@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using BankApp.Database;
@@ -24,8 +25,10 @@ namespace BankApp.Controllers
             {
                 Expenses = _expenseDatabase.GetExpenses(),
                 HighestExpense = _expenseDatabase.GetExpenses().OrderByDescending(x => x.Amount).First(),
-                LowestExpense = _expenseDatabase.GetExpenses().OrderBy(x => x.Amount).First()
-        };
+                LowestExpense = _expenseDatabase.GetExpenses().OrderBy(x => x.Amount).First(),
+                DailyExpenses = _expenseDatabase.GetExpenses().GroupBy(x => x.Date.Date).Select(x => new GroupedExpenses { Date = x.Key, Amount = x.Sum(m => m.Amount) }),
+                HighestDayExpense = _expenseDatabase.GetExpenses().GroupBy(x => x.Date.Date).Select(x => new GroupedExpenses{ Date = x.Key, Amount = x.Sum(m => m.Amount)}).OrderByDescending(x => x.Amount).First()
+            };
             return View(vm);
         }
 

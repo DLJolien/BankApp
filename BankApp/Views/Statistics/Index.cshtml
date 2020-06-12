@@ -72,7 +72,33 @@
                     </td>
                 </tr>
             </tbody>
-        </table>        
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><strong>Most Expensive Date</strong></tr>
+                        <tr>
+                            <td class="info">
+                                @Model.HighestDayExpense.Date.ToShortDateString()
+                            </td>
+                            <td class="info">
+                                @Model.HighestDayExpense.Amount
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+
     }
 }
 
