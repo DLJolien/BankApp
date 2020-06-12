@@ -17,6 +17,9 @@
                         Expense
                     </th>
                     <th>
+                        Category
+                    </th>
+                    <th>
                         Date
                     </th>
                     <th>
@@ -29,23 +32,26 @@
             <tbody>
                 @foreach (BankListViewModel expense in Model)
                 {
-                    <tr>
-                        <td class="info">
-                            @expense.Description
-                        </td>
-                        <td class="info">
-                            @expense.Date
-                        </td>
-                        <td class="info">
-                            @expense.Amount
-                        </td>
-                        <td class="feature">
-                            <a asp-controller="Bank" asp-action="Edit" asp-route-id="@expense.Id">Edit</a>
-                        </td>
-                        <td class="feature">
-                            <a asp-controller="Bank" asp-action="Delete" asp-route-id="@expense.Id">Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="info">
+                        @expense.Description
+                    </td>
+                    <td class="info">
+                        @expense.Category
+                    </td>
+                    <td class="info">
+                        @expense.Date
+                    </td>
+                    <td class="info">
+                        @expense.Amount
+                    </td>
+                    <td class="feature">
+                        <a asp-controller="Bank" asp-action="Edit" asp-route-id="@expense.Id">Edit</a>
+                    </td>
+                    <td class="feature">
+                        <a asp-controller="Bank" asp-action="Delete" asp-route-id="@expense.Id">Delete</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

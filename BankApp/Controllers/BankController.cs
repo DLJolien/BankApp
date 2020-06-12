@@ -27,6 +27,7 @@ namespace BankApp.Controllers
             {
                 BankListViewModel vm = new BankListViewModel() {
                     Id = expense.Id,
+                    Category = expense.Category,
                     Description = expense.Description,
                     Amount = expense.Amount,
                     Date = expense.Date
@@ -49,6 +50,7 @@ namespace BankApp.Controllers
             Expense newExpense = new Expense()
             {
                 Amount = vm.Amount,
+                Category = vm.Category,
                 Description = vm.Description,
                 Date = vm.Date
             };
@@ -62,6 +64,7 @@ namespace BankApp.Controllers
             BankEditViewModel vm = new BankEditViewModel()
             {
                 Amount = expenseToEdit.Amount,
+                Category = expenseToEdit.Category,
                 Description = expenseToEdit.Description,
                 Date = expenseToEdit.Date
             };
@@ -75,6 +78,7 @@ namespace BankApp.Controllers
             Expense newExpense = new Expense()
             {
                 Amount = vm.Amount,
+                Category = vm.Category,
                 Description = vm.Description,
                 Date = vm.Date
             };
