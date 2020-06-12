@@ -10,7 +10,7 @@ namespace BankApp.Models
     {
         public Expense HighestExpense { get; set; }
         public GroupedExpenses HighestDayExpense { get; set; }
-        public IEnumerable<GroupedExpenses> DailyExpenses { get; set; }
+        public IEnumerable<GroupedExpenses> MonthlyExpenses { get; set; }
         public Expense LowestExpense { get; set; }
         public IEnumerable<Expense>Expenses { get; set; }
     }

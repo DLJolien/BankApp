@@ -26,7 +26,8 @@ namespace BankApp.Controllers
                 Expenses = _expenseDatabase.GetExpenses(),
                 HighestExpense = _expenseDatabase.GetExpenses().OrderByDescending(x => x.Amount).First(),
                 LowestExpense = _expenseDatabase.GetExpenses().OrderBy(x => x.Amount).First(),
-                DailyExpenses = _expenseDatabase.GetExpenses().GroupBy(x => x.Date.Date).Select(x => new GroupedExpenses { Date = x.Key, Amount = x.Sum(m => m.Amount) }),
+                // x => x.Date.Date.Year
+                MonthlyExpenses = _expenseDatabase.GetExpenses().GroupBy(x => x.Date.Date.Month).Select(g => new GroupedExpenses { Date = new DateTime(2020, g.Key,01), Amount = g.Sum(m => m.Amount) }).OrderBy(x =>x.Date),
                 HighestDayExpense = _expenseDatabase.GetExpenses().GroupBy(x => x.Date.Date).Select(x => new GroupedExpenses{ Date = x.Key, Amount = x.Sum(m => m.Amount)}).OrderByDescending(x => x.Amount).First()
             };
             return View(vm);

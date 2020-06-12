@@ -1,5 +1,6 @@
 ﻿@model StatisticsIndexViewModel
 
+
 @{
     if (Model.Expenses.Count() == 0)
     {
@@ -88,14 +89,44 @@
             </thead>
             <tbody>
                 <tr><strong>Most Expensive Date</strong></tr>
-                        <tr>
-                            <td class="info">
-                                @Model.HighestDayExpense.Date.ToShortDateString()
-                            </td>
-                            <td class="info">
-                                @Model.HighestDayExpense.Amount
-                            </td>
-                        </tr>
+                <tr>
+                    <td class="info">
+                        @Model.HighestDayExpense.Date.ToShortDateString()
+                    </td>
+                    <td class="info">
+                        @Model.HighestDayExpense.Amount
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Month
+                    </th>
+                    <th>
+                        Total Amount
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><strong>Monthly expenses</strong></tr>
+                @foreach (var month in Model.MonthlyExpenses)
+                {
+                    <tr>
+                        <td class="info">
+                            @month.Date.ToString("MMMM", new System.Globalization.CultureInfo("en-US", true))
+                        </td>
+                        <td class="info">
+                            @month.Amount
+                        </td>
+                    </tr>
+
+                }
+
             </tbody>
         </table>
 
