@@ -7,7 +7,7 @@
         Holiday,
         Hobbies,
         Household,
-        Gifts,
+        Gift,
         Car
     }
 }

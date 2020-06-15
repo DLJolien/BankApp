@@ -88,7 +88,7 @@ namespace BankApp.Database
             Expense expense8 = new Expense()
             {
                 Date = new DateTime(2020, 06, 07, 17, 23, 28),
-                Category = Category.Gifts,
+                Category = Category.Gift,
                 Description = "Present Father's day",
                 Amount = 58.49M
             };
@@ -108,8 +108,6 @@ namespace BankApp.Database
             _photoService.AssignPicToExpense(expense7);
             _photoService.AssignPicToExpense(expense8);
             _photoService.AssignPicToExpense(expense9);
-            expense9.PhotoUrl = @"\expense-pics\shopping.tif";
-            expense8.PhotoUrl = @"\expense-pics\holiday.png";
             Insert(expense1);
             Insert(expense2);
             Insert(expense3);
