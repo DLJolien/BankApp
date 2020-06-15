@@ -7,6 +7,7 @@ using BankApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +27,8 @@ namespace BankApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddSingleton<IExpenseDatabase, ExpenseDatabase>();
+            //services.AddSingleton<IExpenseDatabase, ExpenseDatabase>();
+            services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = BankApp; Trusted_Connection = True; MultipleActiveResultSets = true"));
             services.AddTransient<IPhotoService, PhotoService>();
         }
 

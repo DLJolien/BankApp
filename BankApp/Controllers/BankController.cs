@@ -3,6 +3,7 @@ using BankApp.Domain;
 using BankApp.Models;
 using BankApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,21 +13,22 @@ namespace BankApp.Controllers
 {
     public class BankController : Controller
     {
-        private readonly IExpenseDatabase _expenseDatabase;
+        private readonly ExpenseDbContext _dbContext;
         private readonly IPhotoService _photoService;
 
-        public BankController(IExpenseDatabase expenseDatabase, IPhotoService photoService)
+        public BankController(IPhotoService photoService, ExpenseDbContext dbContext)
         {
-            _expenseDatabase = expenseDatabase;
             _photoService = photoService;
+            _dbContext = dbContext;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             List<BankListViewModel> vmList = new List<BankListViewModel>();
-            IEnumerable<Expense> expenses = _expenseDatabase.GetExpenses().OrderBy(x =>x.Date);
-            foreach (var expense in expenses)
+            IEnumerable<Expense> expenses = await _dbContext.Expenses.ToListAsync();
+            IEnumerable<Expense> sortedExpenses  =  expenses.OrderBy(x =>x.Date);
+            foreach (var expense in sortedExpenses)
             {
                 BankListViewModel vm = new BankListViewModel() {
                     Id = expense.Id,
@@ -49,23 +51,28 @@ namespace BankApp.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create(BankCreateViewModel vm)
+        public async Task<IActionResult> Create(BankCreateViewModel vm)
         {
             Expense newExpense = new Expense()
             {
                 Amount = vm.Amount,
                 Category = vm.Category,
                 Description = vm.Description,
-                Date = vm.Date
+                Date = vm.Date,
+                PhotoUrl = vm.PhotoUrl
             };
-            _photoService.AssignPicToExpense(newExpense);
-            _expenseDatabase.Insert(newExpense);
+            if (String.IsNullOrEmpty(newExpense.PhotoUrl))
+            {
+                _photoService.AssignPicToExpense(newExpense);
+            }
+            _dbContext.Expenses.Add(newExpense);
+            await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            Expense expenseToEdit = _expenseDatabase.GetExpense(id);
+            Expense expenseToEdit = _dbContext.Expenses.Find(id);
             BankEditViewModel vm = new BankEditViewModel()
             {
                 Amount = expenseToEdit.Amount,
@@ -74,11 +81,12 @@ namespace BankApp.Controllers
                 Date = expenseToEdit.Date
             };
 
+
             return View(vm);
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Edit(BankEditViewModel vm)
+        public async Task<IActionResult> Edit(BankEditViewModel vm)
         {
             Expense newExpense = new Expense()
             {
@@ -87,13 +95,14 @@ namespace BankApp.Controllers
                 Description = vm.Description,
                 Date = vm.Date
             };
-            _expenseDatabase.Update(vm.Id, newExpense);
+            _dbContext.Expenses.Update(newExpense);
+            await _dbContext.SaveChangesAsync();
             return (RedirectToAction("Index"));
         }
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            Expense expenseToDelete = _expenseDatabase.GetExpense(id);
+            Expense expenseToDelete = _dbContext.Expenses.Find(id);
             BankDeleteViewModel vm = new BankDeleteViewModel()
             {
                 Id= expenseToDelete.Id,
@@ -106,9 +115,10 @@ namespace BankApp.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult ConfirmDelete(int id)
+        public async Task<IActionResult> ConfirmDelete(int id)
         {
-            _expenseDatabase.Delete(id);
+            _dbContext.Expenses.Remove(_dbContext.Expenses.Find(id));
+            await _dbContext.SaveChangesAsync();
             return (RedirectToAction("Index"));
         }
     }
