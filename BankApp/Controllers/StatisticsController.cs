@@ -29,8 +29,10 @@ namespace BankApp.Controllers
                 Expenses = _expenses,
                 HighestExpense = _expenses.OrderByDescending(x => x.Amount).First(),
                 LowestExpense = _expenses.OrderBy(x => x.Amount).First(),
-                MonthlyExpenses = _expenses.GroupBy(x => x.Date.Date.Month).Select(g => new GroupedExpenses { Date = new DateTime(2020, g.Key,01), Amount = g.Sum(m => m.Amount) }).OrderBy(x =>x.Date),
-                HighestDayExpense = _expenses.GroupBy(x => x.Date.Date).Select(x => new GroupedExpenses{ Date = x.Key, Amount = x.Sum(m => m.Amount)}).OrderByDescending(x => x.Amount).First()
+                MonthlyExpenses = _expenses.GroupBy(x => x.Date.Date.Month).Select(g => new GroupedExpenses { Date = new DateTime(2020, g.Key, 01), Amount = g.Sum(m => m.Amount) }).OrderBy(x => x.Date),
+                HighestDayExpense = _expenses.GroupBy(x => x.Date.Date).Select(x => new GroupedExpenses { Date = x.Key, Amount = x.Sum(m => m.Amount) }).OrderByDescending(x => x.Amount).First(),
+                MostExpensive = _expenses.GroupBy(x => x.Category).Select(g => new GroupedExpenses { Category = g.Key, Amount = g.Sum(m => m.Amount) }).OrderByDescending(x => x.Amount).First(),
+                LeastExpensive = _expenses.GroupBy(x => x.Category).Select(g => new GroupedExpenses { Category = g.Key, Amount = g.Sum(m => m.Amount) }).OrderBy(x => x.Amount).First()
             };
             return View(vm);
         }

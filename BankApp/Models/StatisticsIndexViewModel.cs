@@ -14,6 +14,8 @@ namespace BankApp.Models
         public IEnumerable<GroupedExpenses> MonthlyExpenses { get; set; }
         public Expense LowestExpense { get; set; }
         public IEnumerable<Expense>Expenses { get; set; }
+        public GroupedExpenses MostExpensive { get; set; }
+        public GroupedExpenses LeastExpensive { get; set; }
 
     }
 }

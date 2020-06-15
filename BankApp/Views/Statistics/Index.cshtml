@@ -129,6 +129,56 @@
 
             </tbody>
         </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><strong>Most Expensive Category</strong></tr>
+                <tr>
+                    <td class="info">
+                        @Model.MostExpensive.Category
+                    </td>
+                    <td class="info">
+                        @Model.MostExpensive.Amount
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><strong>Least Expensive Category</strong></tr>
+                <tr>
+                    <td class="info">
+                        @Model.LeastExpensive.Category
+                    </td>
+                    <td class="info">
+                        @Model.LeastExpensive.Amount
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using BankApp.Database;
 using BankApp.Domain;
 using BankApp.Models;
+using BankApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace BankApp.Controllers
     public class BankController : Controller
     {
         private readonly IExpenseDatabase _expenseDatabase;
+        private readonly IPhotoService _photoService;
 
-        public BankController(IExpenseDatabase expenseDatabase)
+        public BankController(IExpenseDatabase expenseDatabase, IPhotoService photoService)
         {
             _expenseDatabase = expenseDatabase;
+            _photoService = photoService;
         }
 
         [HttpGet]
@@ -30,7 +33,8 @@ namespace BankApp.Controllers
                     Category = expense.Category,
                     Description = expense.Description,
                     Amount = expense.Amount,
-                    Date = expense.Date
+                    Date = expense.Date,
+                    PhotoUrl = expense.PhotoUrl
                 };
                 vmList.Add(vm);
 
@@ -54,6 +58,7 @@ namespace BankApp.Controllers
                 Description = vm.Description,
                 Date = vm.Date
             };
+            _photoService.AssignPicToExpense(newExpense);
             _expenseDatabase.Insert(newExpense);
             return RedirectToAction("Index");
         }

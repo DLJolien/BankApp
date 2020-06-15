@@ -1,4 +1,5 @@
 ﻿using BankApp.Domain;
+using BankApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +19,19 @@ namespace BankApp.Database
     public class ExpenseDatabase : IExpenseDatabase
     {
         private int _counter;
+        private IPhotoService _photoService;
         private readonly List<Expense> _expenses;
+       
 
-        public ExpenseDatabase()
+        public ExpenseDatabase(IPhotoService photoService)
         {
             if (_expenses == null)
             {
                 _expenses = new List<Expense>();
             }
+            _photoService = photoService;
             LoadTestData();
+            
         }
 
         private void LoadTestData()
@@ -94,6 +99,17 @@ namespace BankApp.Database
                 Description = "Electricity",
                 Amount = 101M
             };
+            _photoService.AssignPicToExpense(expense1);
+            _photoService.AssignPicToExpense(expense2);
+            _photoService.AssignPicToExpense(expense3);
+            _photoService.AssignPicToExpense(expense4);
+            _photoService.AssignPicToExpense(expense5);
+            _photoService.AssignPicToExpense(expense6);
+            _photoService.AssignPicToExpense(expense7);
+            _photoService.AssignPicToExpense(expense8);
+            _photoService.AssignPicToExpense(expense9);
+            expense9.PhotoUrl = @"\expense-pics\shopping.tif";
+            expense8.PhotoUrl = @"\expense-pics\holiday.png";
             Insert(expense1);
             Insert(expense2);
             Insert(expense3);
