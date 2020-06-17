@@ -41,17 +41,17 @@ namespace BankApp.Services
         }
         public void AssignPicToExpense(Expense expense)
         {
-            //string pathToPicture = string.Empty;
-            //if (expense.Category == Category.Household || expense.Category == Category.Holiday)
-            //{
-            //    pathToPicture = expense.Category.ToString().ToLower() + ".png";
-            //}
-            //else 
-            //{
-            //    pathToPicture = expense.Category.ToString().ToLower() + ".jpg";
-            //}
+            string pathToPicture = string.Empty;
+            if (expense.Category.Name == "Household" || expense.Category.Name == "Holiday")
+            {
+                pathToPicture = expense.Category.Name.ToLower() + ".png";
+            }
+            else
+            {
+                pathToPicture = expense.Category.Name.ToLower() + ".jpg";
+            }
 
-            //expense.PhotoUrl = "/expense-pics/" + pathToPicture;             
+            expense.PhotoUrl = "/expense-pics/" + pathToPicture;
         }
     }
 }

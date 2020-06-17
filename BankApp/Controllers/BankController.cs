@@ -78,6 +78,7 @@ namespace BankApp.Controllers
                 PhotoUrl = vm.PhotoUrl,
                 CategoryId = vm.CategoryId
             };
+            newExpense.Category =  await _dbContext.Categories.FirstOrDefaultAsync(x => x.Id == newExpense.CategoryId);
             if (String.IsNullOrEmpty(newExpense.PhotoUrl))
             {
                 _photoService.AssignPicToExpense(newExpense);
