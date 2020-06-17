@@ -9,6 +9,7 @@ namespace BankApp.Domain
     {
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }
-        public Category Category { get; set; }
+        public int CategoryId { get; set; }
+        public string Category { get; set; }
     }
 }
