@@ -115,6 +115,7 @@ namespace BankApp.Controllers
         public async Task<IActionResult> Edit(int id, BankEditViewModel vm)
         {
             Expense changedExpense = await _dbContext.Expenses.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
+            changedExpense.CategoryId = vm.CategoryId;
             changedExpense.Amount = vm.Amount;
             changedExpense.Description = vm.Description;
             changedExpense.Date = vm.Date;
