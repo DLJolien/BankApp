@@ -4,14 +4,16 @@ using BankApp.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BankApp.Migrations
 {
     [DbContext(typeof(ExpenseDbContext))]
-    partial class ExpenseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200617142407_AddExpensePersonTable")]
+    partial class AddExpensePersonTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,7 +114,7 @@ namespace BankApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons");
+                    b.ToTable("People");
 
                     b.HasData(
                         new
