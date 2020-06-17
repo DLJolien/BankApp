@@ -70,9 +70,9 @@ namespace BankApp.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            Expense expenseToEdit = _dbContext.Expenses.Find(id);
+            Expense expenseToEdit = await _dbContext.Expenses.FindAsync(id);
             BankEditViewModel vm = new BankEditViewModel()
             {
                 Amount = expenseToEdit.Amount,
@@ -86,23 +86,22 @@ namespace BankApp.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Edit(BankEditViewModel vm)
+        public async Task<IActionResult> Edit(int id, BankEditViewModel vm)
         {
-            Expense newExpense = new Expense()
-            {
-                Amount = vm.Amount,
-                Category = vm.Category,
-                Description = vm.Description,
-                Date = vm.Date
-            };
-            _dbContext.Expenses.Update(newExpense);
+            Expense changedExpense = await _dbContext.Expenses.FindAsync(id);
+            changedExpense.Amount = vm.Amount;
+            changedExpense.Category = vm.Category;
+            changedExpense.Description = vm.Description;
+            changedExpense.Date = vm.Date;
+            
+            _dbContext.Expenses.Update(changedExpense);
             await _dbContext.SaveChangesAsync();
             return (RedirectToAction("Index"));
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Expense expenseToDelete = _dbContext.Expenses.Find(id);
+            Expense expenseToDelete = await _dbContext.Expenses.FindAsync(id);
             BankDeleteViewModel vm = new BankDeleteViewModel()
             {
                 Id= expenseToDelete.Id,
