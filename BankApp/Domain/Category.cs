@@ -1,13 +1,8 @@
 ﻿namespace BankApp.Domain
 {
-    public enum Category
+    public class Category
     {
-        Food,
-        UtilityBill,
-        Holiday,
-        Hobbies,
-        Household,
-        Gift,
-        Car
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

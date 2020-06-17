@@ -12,13 +12,13 @@ namespace BankApp.Controllers
 {
     public class StatisticsController : Controller
     {
-        private readonly IExpenseDatabase _expenseDatabase;
+        private readonly ExpenseDbContext _expenseDatabase;
         private readonly IEnumerable<Expense> _expenses;
 
-        public StatisticsController(IExpenseDatabase expenseDatabase)
+        public StatisticsController(ExpenseDbContext dbContext)
         {
-            _expenseDatabase = expenseDatabase;
-            _expenses = _expenseDatabase.GetExpenses();
+            _expenseDatabase = dbContext;
+            _expenses = _expenseDatabase.Expenses;
         }
         [HttpGet]
         public IActionResult Index()

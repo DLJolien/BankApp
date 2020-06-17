@@ -26,15 +26,18 @@ namespace BankApp.Controllers
         public async Task<IActionResult> Index()
         {
             List<BankListViewModel> vmList = new List<BankListViewModel>();
-            IEnumerable<Expense> expenses = await _dbContext.Expenses.ToListAsync();
+            IEnumerable<Expense> expenses = await _dbContext.Expenses.Include(x =>x.Category).ToListAsync();
             IEnumerable<Expense> sortedExpenses  =  expenses.OrderBy(x =>x.Date);
+
             foreach (var expense in sortedExpenses)
             {
+               
+
                 BankListViewModel vm = new BankListViewModel() {
                     Id = expense.Id,
-                    Category = expense.Category,
                     Description = expense.Description,
                     Amount = expense.Amount,
+                    Category = expense.Category.Name,
                     Date = expense.Date,
                     PhotoUrl = expense.PhotoUrl
                 };
@@ -45,9 +48,23 @@ namespace BankApp.Controllers
             return View(vmList);
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            BankCreateViewModel vm = new BankCreateViewModel();
+            vm.Date = DateTime.Now;
+
+            var categories = await _dbContext.Categories.ToListAsync();
+
+            foreach (Category category in categories)
+            {
+                vm.Category.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+                {
+                    Value = category.Id.ToString(),
+                    Text = category.Name
+                });
+            }
+
+            return View(vm);
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -56,10 +73,10 @@ namespace BankApp.Controllers
             Expense newExpense = new Expense()
             {
                 Amount = vm.Amount,
-                Category = vm.Category,
                 Description = vm.Description,
                 Date = vm.Date,
-                PhotoUrl = vm.PhotoUrl
+                PhotoUrl = vm.PhotoUrl,
+                CategoryId = vm.CategoryId
             };
             if (String.IsNullOrEmpty(newExpense.PhotoUrl))
             {
@@ -72,25 +89,33 @@ namespace BankApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Expense expenseToEdit = await _dbContext.Expenses.FindAsync(id);
-            BankEditViewModel vm = new BankEditViewModel()
+            Expense expenseToEdit = await _dbContext.Expenses.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
+
+            var categories = await _dbContext.Categories.ToListAsync();
+            BankEditViewModel vm = new BankEditViewModel();
+
+            foreach (Category category in categories)
             {
-                Amount = expenseToEdit.Amount,
-                Category = expenseToEdit.Category,
-                Description = expenseToEdit.Description,
-                Date = expenseToEdit.Date
-            };
+                vm.Category.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+                {
+                    Value = category.Id.ToString(),
+                    Text = category.Name
+                });
+            }
 
-
+            vm.Amount = expenseToEdit.Amount;
+            vm.CategoryId = expenseToEdit.Category.Id;
+            vm.Description = expenseToEdit.Description;
+            vm.Date = expenseToEdit.Date;
+            
             return View(vm);
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Edit(int id, BankEditViewModel vm)
         {
-            Expense changedExpense = await _dbContext.Expenses.FindAsync(id);
+            Expense changedExpense = await _dbContext.Expenses.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
             changedExpense.Amount = vm.Amount;
-            changedExpense.Category = vm.Category;
             changedExpense.Description = vm.Description;
             changedExpense.Date = vm.Date;
             

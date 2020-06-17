@@ -12,7 +12,7 @@ namespace BankApp.Models
         public string Description { get; set; }
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }
-        public Category Category { get; set; }
+        public string Category { get; set; }
         public string PhotoUrl { get; set; }
     }
 }
