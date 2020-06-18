@@ -39,8 +39,8 @@ namespace BankApp.Controllers
         public IActionResult Developer()
         {
             DeveloperDetailViewModel vm = new DeveloperDetailViewModel() { 
-                FirstName = _configuration["FirstName"],
-                LastName = _configuration["LastName"]
+                FirstName = _configuration["Developer:FirstName"],
+                LastName = _configuration["Developer:LastName"]
             };
             return View(vm);
         }
