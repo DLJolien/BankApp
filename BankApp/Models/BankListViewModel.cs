@@ -14,5 +14,6 @@ namespace BankApp.Models
         public decimal Amount { get; set; }
         public string Category { get; set; }
         public string PhotoUrl { get; set; }
+        public List<string> Persons { get; set; } = new List<string>();
     }
 }

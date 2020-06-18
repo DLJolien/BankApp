@@ -3,7 +3,9 @@ using BankApp.Domain;
 using BankApp.Models;
 using BankApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using sun.net.www.content.image;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,21 +28,20 @@ namespace BankApp.Controllers
         public async Task<IActionResult> Index()
         {
             List<BankListViewModel> vmList = new List<BankListViewModel>();
-            IEnumerable<Expense> expenses = await _dbContext.Expenses.Include(x =>x.Category).ToListAsync();
+            IEnumerable<Expense> expenses = await _dbContext.Expenses.Include(x =>x.Category).Include(x => x.Persons_Expenses).ThenInclude(x => x.Person).ToListAsync();
             IEnumerable<Expense> sortedExpenses  =  expenses.OrderBy(x =>x.Date);
 
             foreach (var expense in sortedExpenses)
             {
-               
-
                 BankListViewModel vm = new BankListViewModel() {
                     Id = expense.Id,
                     Description = expense.Description,
                     Amount = expense.Amount,
                     Category = expense.Category.Name,
                     Date = expense.Date,
-                    PhotoUrl = expense.PhotoUrl
-                };
+                    PhotoUrl = expense.PhotoUrl,
+                    Persons = expense.Persons_Expenses.Select(pe => pe.Person.Name).ToList()
+            };
                 vmList.Add(vm);
 
             }
@@ -54,15 +55,18 @@ namespace BankApp.Controllers
             vm.Date = DateTime.Now;
 
             var categories = await _dbContext.Categories.ToListAsync();
+            var persons = await _dbContext.Persons.ToListAsync();
 
             foreach (Category category in categories)
             {
-                vm.Category.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+                vm.Category.Add(new SelectListItem()
                 {
                     Value = category.Id.ToString(),
                     Text = category.Name
                 });
             }
+
+            vm.Person = persons.Select(person => new SelectListItem() { Value = person.Id.ToString(), Text = person.Name }).ToList();
 
             return View(vm);
         }
@@ -76,7 +80,8 @@ namespace BankApp.Controllers
                 Description = vm.Description,
                 Date = vm.Date,
                 PhotoUrl = vm.PhotoUrl,
-                CategoryId = vm.CategoryId
+                CategoryId = vm.CategoryId,
+                Persons_Expenses = vm.SelectedPersons.Select(person => new Person_Expense() { PersonId = person }).ToList()
             };
             newExpense.Category =  await _dbContext.Categories.FirstOrDefaultAsync(x => x.Id == newExpense.CategoryId);
             if (String.IsNullOrEmpty(newExpense.PhotoUrl))
@@ -93,6 +98,7 @@ namespace BankApp.Controllers
             Expense expenseToEdit = await _dbContext.Expenses.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
 
             var categories = await _dbContext.Categories.ToListAsync();
+            var persons = await _dbContext.Persons.ToListAsync();
             BankEditViewModel vm = new BankEditViewModel();
 
             foreach (Category category in categories)
@@ -103,6 +109,8 @@ namespace BankApp.Controllers
                     Text = category.Name
                 });
             }
+
+            vm.Person = persons.Select(person => new SelectListItem() { Value = person.Id.ToString(), Text = person.Name }).ToList();
 
             vm.Amount = expenseToEdit.Amount;
             vm.CategoryId = expenseToEdit.Category.Id;
@@ -116,11 +124,14 @@ namespace BankApp.Controllers
         public async Task<IActionResult> Edit(int id, BankEditViewModel vm)
         {
             Expense changedExpense = await _dbContext.Expenses.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
+            changedExpense.Persons_Expenses = vm.SelectedPersons.Select(person => new Person_Expense() { PersonId = person }).ToList();
             changedExpense.CategoryId = vm.CategoryId;
             changedExpense.Amount = vm.Amount;
             changedExpense.Description = vm.Description;
             changedExpense.Date = vm.Date;
-            
+
+            var expense = _dbContext.Expenses.Include(a => a.Persons_Expenses).SingleOrDefault(a => a.Id == id);
+            _dbContext.Remove(expense);
             _dbContext.Expenses.Update(changedExpense);
             await _dbContext.SaveChangesAsync();
             return (RedirectToAction("Index"));

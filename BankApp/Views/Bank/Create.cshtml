@@ -20,6 +20,11 @@
             <select asp-for="@Model.CategoryId" asp-items="@Model.Category">
             </select>
         </div>
+        <div class="form-group">
+            <label asp-for="SelectedPersons"></label>
+            <select multiple class="form-control" asp-for="SelectedPersons" asp-items="@Model.Person"></select>
+            <span class="text-danger" asp-validation-for="SelectedPersons"></span>
+        </div>
         <button class="btn-success" type="submit">Create</button>
     </form>
 

@@ -15,5 +15,7 @@ namespace BankApp.Models
         public decimal Amount { get; set; }
         public int CategoryId { get; set; }
         public List<SelectListItem> Category { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> Person { get; set; } = new List<SelectListItem>();
+        public int[] SelectedPersons { get; set; }
     }
 }

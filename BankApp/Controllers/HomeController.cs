@@ -23,7 +23,11 @@ namespace BankApp.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogDebug("Index Home reached");
+            _logger.LogInformation("Index Home reached");
+            
             return View();
+            
         }
 
         public IActionResult Privacy()
