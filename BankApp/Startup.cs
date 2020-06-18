@@ -28,7 +28,7 @@ namespace BankApp
         {
             services.AddControllersWithViews();
             //services.AddSingleton<IExpenseDatabase, ExpenseDatabase>();
-            services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = BankApp; Trusted_Connection = True; MultipleActiveResultSets = true"));
+            services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IPhotoService, PhotoService>();
         }
 
