@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BankApp.Database;
+using BankApp.Domain;
 using BankApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,15 @@ namespace BankApp
             services.AddControllersWithViews();
             //services.AddSingleton<IExpenseDatabase, ExpenseDatabase>();
             services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<BankAppIdentity>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+                .AddEntityFrameworkStores<ExpenseDbContext>();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
             services.AddTransient<IPhotoService, PhotoService>();
         }
 
@@ -50,6 +60,7 @@ namespace BankApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -57,6 +68,7 @@ namespace BankApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Bank}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

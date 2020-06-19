@@ -1,6 +1,13 @@
 ﻿@model IEnumerable<BankListViewModel>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<BankApp.Domain.BankAppIdentity> signInManager
 
-<a asp-controller="Bank" asp-action="Create">Add new expense</a>
+@if (signInManager.IsSignedIn(User))
+{
+    <a asp-controller="Bank" asp-action="Create">Add new expense</a>
+}
+
+
 
 @{
     if (Model.Count() == 0)
@@ -31,48 +38,56 @@
                     <th>
                         Cost shared with
                     </th>
-                    <th> Options </th>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <th> Options </th>
+                    }
+
                 </tr>
             </thead>
             <tbody>
                 @foreach (BankListViewModel expense in Model)
                 {
-                <tr>
-                    <td class="info">
-                        <img src="@expense.PhotoUrl" />
-                    </td>
-                    <td class="info">
-                        @expense.Description
-                    </td>
-                    <td class="info">
-                        @expense.Category
-                    </td>
-                    <td class="info">
-                        @expense.Date
-                    </td>
-                    <td class="info">
-                        @expense.Amount
-                    </td>
-                    <td class="info">
-                        @{
-                            if (expense.Persons.Count == 0)
-                            {
-                                <p>No one</p>
-                            }
-                            else
-                            {
-                                foreach (string name in expense.Persons)
+                    <tr>
+                        <td class="info">
+                            <img src="@expense.PhotoUrl" />
+                        </td>
+                        <td class="info">
+                            @expense.Description
+                        </td>
+                        <td class="info">
+                            @expense.Category
+                        </td>
+                        <td class="info">
+                            @expense.Date
+                        </td>
+                        <td class="info">
+                            @expense.Amount
+                        </td>
+                        <td class="info">
+                            @{
+                                if (expense.Persons.Count == 0)
                                 {
-                                    <p>@name</p>
+                                    <p>No one</p>
+                                }
+                                else
+                                {
+                                    foreach (string name in expense.Persons)
+                                    {
+                                        <p>@name</p>
+                                    }
                                 }
                             }
+                        </td>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <td class="feature">
+                                <a asp-controller="Bank" asp-action="Edit" asp-route-id="@expense.Id">Edit</a>
+                                <a asp-controller="Bank" asp-action="Delete" asp-route-id="@expense.Id">Delete</a>
+                            </td>
                         }
-                    </td>
-                    <td class="feature">
-                        <a asp-controller="Bank" asp-action="Edit" asp-route-id="@expense.Id">Edit</a>
-                        <a asp-controller="Bank" asp-action="Delete" asp-route-id="@expense.Id">Delete</a>
-                    </td>
-                </tr>
+
+                    </tr>
                 }
             </tbody>
         </table>
@@ -87,8 +102,8 @@
     .info {
         width: 20vw;
     }
-    img{
+
+    img {
         width: 100px;
     }
-
 </style>

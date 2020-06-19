@@ -1,4 +1,5 @@
 ﻿using BankApp.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BankApp.Database
 {
-    public class ExpenseDbContext : DbContext
+    public class ExpenseDbContext : IdentityDbContext<BankAppIdentity>
     {
         public ExpenseDbContext(DbContextOptions<ExpenseDbContext> options)
             : base(options)

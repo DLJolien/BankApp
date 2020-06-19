@@ -2,6 +2,7 @@
 using BankApp.Domain;
 using BankApp.Models;
 using BankApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,7 @@ namespace BankApp.Controllers
             
             return View(vmList);
         }
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -71,6 +73,7 @@ namespace BankApp.Controllers
             return View(vm);
         }
         [ValidateAntiForgeryToken]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(BankCreateViewModel vm)
         {
@@ -92,6 +95,7 @@ namespace BankApp.Controllers
             await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -119,6 +123,7 @@ namespace BankApp.Controllers
             
             return View(vm);
         }
+        [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Edit(int id, BankEditViewModel vm)
@@ -136,6 +141,7 @@ namespace BankApp.Controllers
             await _dbContext.SaveChangesAsync();
             return (RedirectToAction("Index"));
         }
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -150,6 +156,7 @@ namespace BankApp.Controllers
 
             return View(vm);
         }
+        [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> ConfirmDelete(int id)
