@@ -17,5 +17,7 @@ namespace BankApp.Domain
         public Category Category { get; set; }
         public string PhotoUrl { get; set; }
         public ICollection<Person_Expense> Persons_Expenses { get; set; }
+        public BankAppIdentity BankAppIdentity { get; set; }
+       public string BankAppIdentityId { get; set; }
     }
 }

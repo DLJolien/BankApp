@@ -3,6 +3,7 @@ using BankApp.Domain;
 using BankApp.Models;
 using BankApp.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using sun.net.www.content.image;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BankApp.Controllers
@@ -28,8 +30,9 @@ namespace BankApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             List<BankListViewModel> vmList = new List<BankListViewModel>();
-            IEnumerable<Expense> expenses = await _dbContext.Expenses.Include(x =>x.Category).Include(x => x.Persons_Expenses).ThenInclude(x => x.Person).ToListAsync();
+            IEnumerable<Expense> expenses = await _dbContext.Expenses.Include(x =>x.Category).Include(x => x.Persons_Expenses).ThenInclude(x => x.Person).Where(expense => expense.BankAppIdentityId == userId).ToListAsync();
             IEnumerable<Expense> sortedExpenses  =  expenses.OrderBy(x =>x.Date);
 
             foreach (var expense in sortedExpenses)
@@ -41,7 +44,8 @@ namespace BankApp.Controllers
                     Category = expense.Category.Name,
                     Date = expense.Date,
                     PhotoUrl = expense.PhotoUrl,
-                    Persons = expense.Persons_Expenses.Select(pe => pe.Person.Name).ToList()
+                    Persons = expense.Persons_Expenses.Select(pe => pe.Person.Name).ToList(),
+               
             };
                 vmList.Add(vm);
 
@@ -77,6 +81,7 @@ namespace BankApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(BankCreateViewModel vm)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Expense newExpense = new Expense()
             {
                 Amount = vm.Amount,
@@ -84,7 +89,8 @@ namespace BankApp.Controllers
                 Date = vm.Date,
                 PhotoUrl = vm.PhotoUrl,
                 CategoryId = vm.CategoryId,
-                Persons_Expenses = vm.SelectedPersons.Select(person => new Person_Expense() { PersonId = person }).ToList()
+                Persons_Expenses = vm.SelectedPersons.Select(person => new Person_Expense() { PersonId = person }).ToList(),
+                BankAppIdentityId = userId
             };
             newExpense.Category =  await _dbContext.Categories.FirstOrDefaultAsync(x => x.Id == newExpense.CategoryId);
             if (String.IsNullOrEmpty(newExpense.PhotoUrl))
@@ -129,16 +135,20 @@ namespace BankApp.Controllers
         public async Task<IActionResult> Edit(int id, BankEditViewModel vm)
         {
             Expense changedExpense = await _dbContext.Expenses.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
-            changedExpense.Persons_Expenses = vm.SelectedPersons.Select(person => new Person_Expense() { PersonId = person }).ToList();
-            changedExpense.CategoryId = vm.CategoryId;
-            changedExpense.Amount = vm.Amount;
-            changedExpense.Description = vm.Description;
-            changedExpense.Date = vm.Date;
+            if (changedExpense.BankAppIdentityId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                changedExpense.Persons_Expenses = vm.SelectedPersons.Select(person => new Person_Expense() { PersonId = person }).ToList();
+                changedExpense.CategoryId = vm.CategoryId;
+                changedExpense.Amount = vm.Amount;
+                changedExpense.Description = vm.Description;
+                changedExpense.Date = vm.Date;
 
-            var expense = _dbContext.Expenses.Include(a => a.Persons_Expenses).SingleOrDefault(a => a.Id == id);
-            _dbContext.Remove(expense);
-            _dbContext.Expenses.Update(changedExpense);
-            await _dbContext.SaveChangesAsync();
+                var expense = _dbContext.Expenses.Include(a => a.Persons_Expenses).SingleOrDefault(a => a.Id == id);
+                _dbContext.Remove(expense);
+                _dbContext.Expenses.Update(changedExpense);
+                await _dbContext.SaveChangesAsync();
+            }
+                      
             return (RedirectToAction("Index"));
         }
         [Authorize]
@@ -161,8 +171,13 @@ namespace BankApp.Controllers
         [HttpPost]
         public async Task<IActionResult> ConfirmDelete(int id)
         {
-            _dbContext.Expenses.Remove(_dbContext.Expenses.Find(id));
-            await _dbContext.SaveChangesAsync();
+            Expense expenseToDelete = _dbContext.Expenses.Find(id);
+            if (expenseToDelete.BankAppIdentityId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                _dbContext.Expenses.Remove(expenseToDelete);
+                await _dbContext.SaveChangesAsync();
+            }
+            
             return (RedirectToAction("Index"));
         }
     }
